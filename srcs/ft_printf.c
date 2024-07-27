@@ -6,7 +6,7 @@
 /*   By: girts <girts@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 11:35:38 by girts521          #+#    #+#             */
-/*   Updated: 2024/06/26 08:08:03 by girts            ###   ########.fr       */
+/*   Updated: 2024/07/27 16:38:07 by girts            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ static void	initialize_table(t_format_specifier *format_table)
 }
 
 static int	handle_argument(char conversion, va_list *ap, \
-							t_format_specifier *format_table)
+							t_format_specifier *format_table, int *len)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < 9)
+	while (i <= 8)
 	{
 		if (format_table[i].specifier == conversion)
 		{
-			format_table[i].handler(*ap);
+			format_table[i].handler(*ap, len);
 			return (1);
 		}
 		i++;
@@ -53,29 +53,30 @@ static int	handle_argument(char conversion, va_list *ap, \
 static int	process_format_string(const char *str, va_list *ap, \
 									t_format_specifier *format_table)
 {
-	char	conversion;
-	int		handled;
+	int	i;
 
+	i = 0;
 	while (*str)
 	{
+		if (*str != '%')
+		{
+			write(1, str++, 1);
+			i++;
+			continue ;
+		}
+		str++;
+		if (!*str)
+			return (0);
 		if (*str == '%')
 		{
-			str++;
-			if (*str)
-			{
-				conversion = *str;
-				handled = handle_argument(conversion, ap, format_table);
-				if (!handled)
-					return (0);
-				str++;
-			}
-			else
-				return (0);
+			ft_putchar_fd('%', 1);
+			i++;
 		}
-		else
-			write(1, str++, 1);
+		else if (!handle_argument(*str, ap, format_table, &i))
+			return (0);
+		str++;
 	}
-	return (1);
+	return (i);
 }
 
 int	ft_printf(const char *str, ...)
