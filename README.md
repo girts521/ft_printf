@@ -43,3 +43,9 @@ cd ft_printf
 make
 ```
 
+##  License
+
+This project is distributed under the MIT License. See the LICENSE file for details.
+
+## Contact
+If you have any questions or feedback, feel free to create an issue on this repository.
