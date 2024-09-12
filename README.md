@@ -38,7 +38,7 @@ To use the `ft_printf` function in your project:
 Clone this repository and compile the source files along with your project:
 
 ```bash
-git clone https://github.com/yourusername/ft_printf.git
+git clone https://github.com/girts521/ft_printf.git
 cd ft_printf
 make
 ```
